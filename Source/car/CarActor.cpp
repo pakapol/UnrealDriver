@@ -12,6 +12,13 @@
 #include <json.hpp>
 using json = nlohmann::json;
 
+void printVector(std::vector<float> * arr){
+    for (size_t i = 0; i < (*arr).size(); i++){
+        std::cout << (*arr)[i] << " ";
+    }
+    std::cout << std::endl;
+}
+
 namespace automotive {
     struct vehicle_defs {
         int id;
@@ -51,17 +58,38 @@ void to_julia(std::vector<double> xs, std::vector<double> ys, std::vector<double
     std::string s = j.dump();
     
     zmq::context_t context(1);
-    zmq::socket_t socket(context, ZMQ_REP);
-    socket.bind("tcp://*:5555");
+    zmq::socket_t socket(context, ZMQ_REQ);
+    //socket.bind("tcp://*:5555");
+    socket.connect("tcp://localhost:5555");
+
+    // send request
+    zmq::message_t request(s.size());
+    memcpy((void*) request.data(), (s.c_str()), s.size());
+    socket.send(request);
+
+    // receive reply
+    zmq::message_t reply;
+    socket.recv(&reply);
+
+    //process reply
+    std::string replyMessage = std::string(static_cast<char*>(reply.data()), reply.size());
+    std::stringstream iss( replyMessage );
+
+    // Print out received message
+    float number;
+    std::vector<float> action;
+    while( iss >> number ){
+        action.push_back( number );
+    }
     
-    zmq::message_t request;
-    std::cout << "Waiting on message..." << std::endl;
-    socket.recv(&request);
-        
-    std::cout << "Sending message." << std::endl;
-    zmq::message_t reply(s.size());
-    memcpy((void *) reply.data(), (s.c_str()), s.size());
-    socket.send(reply);
+//    zmq::message_t request;
+//    std::cout << "Waiting on message..." << std::endl;
+//    socket.recv(&request);
+//        
+//    std::cout << "Sending message." << std::endl;
+//    zmq::message_t reply(s.size());
+//    memcpy((void *) reply.data(), (s.c_str()), s.size());
+//    socket.send(reply);
     
 }
 
