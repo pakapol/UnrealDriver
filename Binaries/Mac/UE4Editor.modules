@@ -4,6 +4,6 @@
 	"BuildId" : "b2a97f5b-7870-4a03-babd-9ff020369c0b",
 	"Modules" : 
 	{
-		"car" : "UE4Editor-car-6738.dylib"
+		"multibox" : "UE4Editor-multibox.dylib"
 	}
 }
