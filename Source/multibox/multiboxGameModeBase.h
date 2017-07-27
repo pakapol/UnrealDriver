@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
-#include "carGameModeBase.generated.h"
+#include "multiboxGameModeBase.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class CAR_API AcarGameModeBase : public AGameModeBase
+class MULTIBOX_API AmultiboxGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 	

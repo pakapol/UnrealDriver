@@ -4,24 +4,27 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "CarActor.generated.h"
+#include "Components/BoxComponent.h"
+#include "BoxActor.generated.h"
 
 UCLASS()
-class CAR_API ACarActor : public AActor
+class MULTIBOX_API ABoxActor : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+  UPROPERTY(VisibleAnywhere)
+  UBoxComponent* pComponent;
+
+public:
 	// Sets default values for this actor's properties
-	ACarActor();
+	ABoxActor();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
+public:
 	virtual void Tick(float DeltaTime) override;
-    float Speed;
-	
+	double Speed;
+    void Update(float DeltaTime, double acceleration, double turnRate);
+    void InitVehicle(FVector dims, FVector location);
 };
